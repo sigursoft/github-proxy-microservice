@@ -3,7 +3,6 @@ package bel.kozik.github.service;
 import bel.kozik.github.domain.Repository;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.google.common.collect.MapMaker;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -12,10 +11,8 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import static com.jayway.jsonpath.JsonPath.read;
@@ -61,8 +58,9 @@ public class GitHubService {
                 HttpGet request = new HttpGet(url);
                 try (CloseableHttpResponse response = client.execute(request)) {
                     if (response.getStatusLine().getStatusCode() == 200) {
-                        Scanner s = new Scanner(response.getEntity().getContent(), StandardCharsets.UTF_8.toString()).useDelimiter("\\A");
-                        responseFromGitHub = s.hasNext() ? s.next() : "";
+                        try(Scanner s = new Scanner(response.getEntity().getContent(), StandardCharsets.UTF_8.toString()).useDelimiter("\\A")) {
+                        	responseFromGitHub = s.hasNext() ? s.next() : "";
+                        }
                     }
                 }
             }
