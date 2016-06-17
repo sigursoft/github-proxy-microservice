@@ -56,19 +56,12 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+#stars {
+	float: left;
+    padding-right: 6px;
+    padding-top: 2px;
+    font-size: larger;
+}
 
 /* ==========================================================================
    Media Queries
