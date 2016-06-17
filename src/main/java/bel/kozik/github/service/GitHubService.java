@@ -28,14 +28,11 @@ public class GitHubService {
 
     private final Cache<String, Repository> cache;
 
-    private final CloseableHttpClient client;
-
     private final PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
 
-    public GitHubService() throws IOException {
-        this.cache = new DefaultCacheManager("cache/infinispan.xml").getCache("repos");
+    public GitHubService(String config) throws IOException {
+        this.cache = new DefaultCacheManager(config).getCache("repos");
         this.cm.setMaxTotal(100);
-        this.client = HttpClients.custom().setConnectionManager(cm).build();
     }
 
     /**
@@ -53,7 +50,7 @@ public class GitHubService {
         } else {
             String responseFromGitHub = null;
             HttpGet request = new HttpGet(url);
-            try (CloseableHttpResponse response = client.execute(request)) {
+            try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(cm).build(); CloseableHttpResponse response = client.execute(request)) {
                 if (response.getStatusLine().getStatusCode() == 200) {
                     try (Scanner s = new Scanner(response.getEntity().getContent(), UTF_8.toString()).useDelimiter("\\A")) {
                         responseFromGitHub = s.hasNext() ? s.next() : "";

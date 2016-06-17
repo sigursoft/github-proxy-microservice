@@ -4,12 +4,8 @@
             xmlns="urn:infinispan:config:8.2">
 
     <cache-container name="EmbeddedCacheManager" default-cache="the-default-cache" statistics="true" shutdown-hook="DEFAULT">
-        <jmx domain="infinispan.cache" duplicate-domains="true"/>
+        <jmx domain="infinispan.cache" mbean-server-lookup="bel.kozik.github.utility.DummyMBeanServerLookup" />
         <local-cache name="repos" simple-cache="true">
-            <!-- Maximum cache size is 1M entries -->
-            <eviction size="1000000"/>
-            <!-- Expiration period is 1 day -->
-            <expiration lifespan="86400000"/>
         </local-cache>
     </cache-container>
 

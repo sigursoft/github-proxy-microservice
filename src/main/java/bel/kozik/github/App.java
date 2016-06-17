@@ -44,7 +44,7 @@ public class App {
         LOGGER.info(String.format("Hostname = %s, port = %d", hostname, port));
 
         // GIT HUB SERVICE
-        GitHubService service = new GitHubService();
+        GitHubService service = new GitHubService("cache/infinispan.xml");
         GitHubHttpHandler gitHubHttpHandler = new GitHubHttpHandler(service);
         BlockingHandler blockingHandler = new BlockingHandler(gitHubHttpHandler);
         ErrorResponseHandler errorResponseHandler = new ErrorResponseHandler(blockingHandler);

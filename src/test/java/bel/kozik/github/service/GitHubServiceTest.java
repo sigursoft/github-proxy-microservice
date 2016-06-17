@@ -19,7 +19,7 @@ public class GitHubServiceTest {
         // given
         String owner = "vaadin";
         String repo = "vaadin";
-        GitHubService service = new GitHubService();
+        GitHubService service = new GitHubService("cache/infinispan-test.xml");
         // when
         String response = service.findRepository(owner, repo);
         // then
