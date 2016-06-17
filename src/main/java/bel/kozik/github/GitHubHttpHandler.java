@@ -14,7 +14,11 @@ class GitHubHttpHandler implements HttpHandler {
 
     private static final Logger LOGGER = Logger.getLogger(GitHubHttpHandler.class.getName());
 
-    private GitHubService service = new GitHubService();
+    private final GitHubService service;
+
+    GitHubHttpHandler(GitHubService service) {
+        this.service = service;
+    }
 
     /**
      * Handles requests from client

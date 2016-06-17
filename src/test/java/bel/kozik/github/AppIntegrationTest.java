@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -20,7 +21,11 @@ public class AppIntegrationTest {
     @Before
     public void setup() {
         System.setProperty("PORT", "9080");
-        App.start();
+        try {
+            App.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @After

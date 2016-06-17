@@ -1,22 +1,21 @@
 package bel.kozik.github.service;
 
 import bel.kozik.github.domain.Repository;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.infinispan.Cache;
+import org.infinispan.manager.DefaultCacheManager;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 import static com.jayway.jsonpath.JsonPath.read;
 import static java.lang.String.format;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Git Hub Service is responsible for sending requests to GitHub API and returning results.
@@ -27,17 +26,16 @@ public class GitHubService {
 
     private static final String GIT_HUB_URL_PATTERN = "https://api.github.com/repos/%s/%s";
 
-    private static final int MAX_THREADS = 100;
-
     private final Cache<String, Repository> cache;
 
-    private final PoolingHttpClientConnectionManager cm;
+    private final CloseableHttpClient client;
 
-    public GitHubService() {
-        cache = CacheBuilder.newBuilder().maximumSize(1_000_000)
-                .expireAfterWrite(1, TimeUnit.DAYS).build();
-        cm = new PoolingHttpClientConnectionManager();
-        cm.setMaxTotal(MAX_THREADS);
+    private final PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
+
+    public GitHubService() throws IOException {
+        this.cache = new DefaultCacheManager("cache/infinispan.xml").getCache("repos");
+        this.cm.setMaxTotal(100);
+        this.client = HttpClients.custom().setConnectionManager(cm).build();
     }
 
     /**
@@ -49,24 +47,22 @@ public class GitHubService {
     public String findRepository(String owner, String repo) throws IOException {
         String url = format(GIT_HUB_URL_PATTERN, owner, repo);
 
-        Optional<Repository> cachedRepository = Optional.ofNullable(cache.getIfPresent(url));
+        Optional<Repository> cachedRepository = Optional.ofNullable(cache.get(url));
         if (cachedRepository.isPresent()) {
             return cachedRepository.get().toJSON();
         } else {
             String responseFromGitHub = null;
-            try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(cm).build()) {
-                HttpGet request = new HttpGet(url);
-                try (CloseableHttpResponse response = client.execute(request)) {
-                    if (response.getStatusLine().getStatusCode() == 200) {
-                        try(Scanner s = new Scanner(response.getEntity().getContent(), StandardCharsets.UTF_8.toString()).useDelimiter("\\A")) {
-                        	responseFromGitHub = s.hasNext() ? s.next() : "";
-                        }
+            HttpGet request = new HttpGet(url);
+            try (CloseableHttpResponse response = client.execute(request)) {
+                if (response.getStatusLine().getStatusCode() == 200) {
+                    try (Scanner s = new Scanner(response.getEntity().getContent(), UTF_8.toString()).useDelimiter("\\A")) {
+                        responseFromGitHub = s.hasNext() ? s.next() : "";
                     }
                 }
             }
             if (responseFromGitHub != null) {
                 Repository repository = aRepository(responseFromGitHub);
-                cache.put(url, repository);
+                cache.putAsync(url, repository);
                 return repository.toJSON();
             } else {
                 throw new IllegalStateException("Failed on request to GitHub");
