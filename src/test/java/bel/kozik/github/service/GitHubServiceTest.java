@@ -1,8 +1,6 @@
 package bel.kozik.github.service;
 
-
 import com.jayway.jsonpath.JsonPath;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
