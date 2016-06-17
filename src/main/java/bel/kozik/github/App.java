@@ -1,23 +1,19 @@
 package bel.kozik.github;
 
-import bel.kozik.github.domain.Repository;
-import bel.kozik.github.service.GitHubService;
-import io.undertow.Undertow;
-import io.undertow.server.handlers.BlockingHandler;
-import io.undertow.server.handlers.cache.DirectBufferCache;
-import io.undertow.server.handlers.resource.CachingResourceManager;
-import io.undertow.server.handlers.resource.ClassPathResourceManager;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.infinispan.Cache;
-import org.infinispan.manager.DefaultCacheManager;
+import static io.undertow.Handlers.path;
+import static io.undertow.Handlers.resource;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-import static io.undertow.Handlers.path;
-import static io.undertow.Handlers.resource;
+import bel.kozik.github.service.GitHubService;
+import io.undertow.Undertow;
+import io.undertow.server.handlers.BlockingHandler;
+import io.undertow.server.handlers.cache.DirectBufferCache;
+import io.undertow.server.handlers.resource.CachingResourceManager;
+import io.undertow.server.handlers.resource.ClassPathResourceManager;
 
 
 /**
