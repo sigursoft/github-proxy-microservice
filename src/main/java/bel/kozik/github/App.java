@@ -53,7 +53,6 @@ public class App {
         ClassPathResourceManager cprm = new ClassPathResourceManager(App.class.getClassLoader(), "html");
         CachingResourceManager crm = new CachingResourceManager(100, 65536, new DirectBufferCache(1024, 10, 10480),
                                                                 cprm, (int) Duration.ofDays(7).getSeconds());
-
         server = Undertow.builder()
                 .addHttpListener(port, hostname)
                 .setHandler(path().addPrefixPath("/", resource(crm)).addPrefixPath("/repositories", errorResponseHandler))

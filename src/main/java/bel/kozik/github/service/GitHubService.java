@@ -18,7 +18,7 @@ import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Git Hub Service is responsible for sending requests to GitHub API and returning results.
+ * GitHub Service is responsible for sending requests to GitHub API and returning results.
  * <p>
  * Created by Anton Kozik on 27.05.16.
  */
@@ -50,7 +50,8 @@ public class GitHubService {
         } else {
             String responseFromGitHub = null;
             HttpGet request = new HttpGet(url);
-            try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(cm).build(); CloseableHttpResponse response = client.execute(request)) {
+            CloseableHttpClient client = HttpClients.custom().setConnectionManager(cm).build();
+            try (CloseableHttpResponse response = client.execute(request)) {
                 if (response.getStatusLine().getStatusCode() == 200) {
                     try (Scanner s = new Scanner(response.getEntity().getContent(), UTF_8.toString()).useDelimiter("\\A")) {
                         responseFromGitHub = s.hasNext() ? s.next() : "";
