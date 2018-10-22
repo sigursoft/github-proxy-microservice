@@ -29,7 +29,7 @@
         <dependency>
             <groupId>org.infinispan</groupId>
             <artifactId>infinispan-core</artifactId>
-            <version>8.2.2.Final</version>
+            <version>8.2.11.Final</version>
         </dependency>
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
