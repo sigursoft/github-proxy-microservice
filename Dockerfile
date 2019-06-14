@@ -6,7 +6,7 @@ WORKDIR /app
 
 COPY /target/dist/libs libs
 
-COPY target/dist/simple-github-service-1.1.jar app.jar
+COPY target/dist/simple-github-service-2.0.jar app.jar
 
 EXPOSE 8080
 
