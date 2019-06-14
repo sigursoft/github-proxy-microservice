@@ -28,7 +28,7 @@ class ErrorResponseHandler implements HttpHandler {
            if (!exchange.isResponseChannelAvailable()) {
                return false;
            }
-            if (exchange.getResponseCode() == 500) {
+            if (exchange.getStatusCode() == 500) {
                 exchange.getResponseHeaders().put(CONTENT_LENGTH, "" + HTML.length());
                 exchange.getResponseHeaders().put(CONTENT_TYPE, TEXT_HTML);
                 exchange.getResponseSender().send(HTML);
