@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <infinispan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:schemaLocation="urn:infinispan:config:8.2 http://infinispan.org/schemas/infinispan-config-8.2.xsd"
-            xmlns="urn:infinispan:config:8.2">
+            xsi:schemaLocation="urn:infinispan:config:9.4 http://www.infinispan.org/schemas/infinispan-config-9.4.xsd"
+            xmlns="urn:infinispan:config:9.4">
 
-    <cache-container name="EmbeddedCacheManager" default-cache="the-default-cache" statistics="true" shutdown-hook="DEFAULT">
+    <cache-container default-cache="default" shutdown-hook="DEFAULT">
         <jmx domain="infinispan.cache" duplicate-domains="true"/>
-        <local-cache name="repos" simple-cache="true">
-            <!-- Maximum cache size is 1M entries -->
-            <eviction size="1000000"/>
+        <local-cache name="repos">
+            <!-- Maximum cache size is 100 entries -->
+            <memory>
+                <object size="100" />
+            </memory>
             <!-- Expiration period is 1 day -->
-            <expiration lifespan="86400000"/>
+            <expiration lifespan="86400000" max-idle="500" interval="1000"/>
+        </local-cache>
+        <local-cache name="default">
+            <!-- Maximum cache size is 10_000 entries -->
+            <memory>
+                <object size="100" />
+            </memory>
+            <!-- Expiration period is 1 day -->
+            <expiration lifespan="3600000" max-idle="500" interval="1000"/>
         </local-cache>
     </cache-container>
 
