@@ -3,6 +3,7 @@ package bel.kozik.github;
 import bel.kozik.github.service.GitHubService;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
+import io.undertow.util.Headers;
 
 import java.util.logging.Logger;
 
@@ -33,6 +34,7 @@ class GitHubHttpHandler implements HttpHandler {
             String repo = pathParams[2];
             LOGGER.fine(String.format("Path parameters are %s and %s", owner, repo));
             String response = service.findRepository(owner, repo);
+            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "application/json");
             exchange.getResponseSender().send(response);
         } else {
             throw new IllegalArgumentException("Not all parameters are provided");

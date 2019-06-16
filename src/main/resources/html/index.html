@@ -7,9 +7,10 @@
     <meta name="description" content="Search form for GitHub projects">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="css/normalize.min.css">
+    <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
 
+    <meta name="theme-color" content="#fafafa">
     <!--Import Google Icon Font-->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
@@ -37,7 +38,7 @@
         <input id="icon_code" type="text" class="validate">
         <label for="icon_code">Project</label>
     </div>
-    <button id="search" class="btn waves-effect waves-light right" style="margin-top: 10px;">Search</button>
+    <button id="search" data-target="modal1" class="btn waves-effect waves-light right" style="margin-top: 10px;">Search</button>
     </div>
 </div>
 </div>
@@ -56,13 +57,14 @@
         </ul>
     </div>
     <div class="modal-footer">
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">OK</a>
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">OK</a>
     </div>
 </div>
 
 <!--Import jQuery before materialize.js-->
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="js/vendor/materialize.min.js"></script>
+<script type="text/javascript" src="js/vendor/modernizr.min.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>
