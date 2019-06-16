@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: github-proxy-microservice-deployment
+  labels:
+    app: github-proxy-microservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: github-proxy-microservice
+  template:
+    metadata:
+      labels:
+        app: github-proxy-microservice
+    spec:
+      containers:
+      - name: github-proxy-microservice
+        image: sigursoft/github-proxy-microservice:2.0
+        ports:
+        - name: github-proxy
+          containerPort: 8080
+        readinessProbe:
+          tcpSocket:
+            port: github-proxy
+          initialDelaySeconds: 10
+          timeoutSeconds: 6
+          periodSeconds: 2
+          failureThreshold: 100
+        livenessProbe:
+          httpGet:
+            path: /
+            port: github-proxy
+          initialDelaySeconds: 30
+          timeoutSeconds: 4
+          periodSeconds: 3
+        resources:
+          limits:
+            cpu: "2"
+            memory: 1024Mi
+          requests:
+            cpu: "0.6"
+            memory: 512Mi
