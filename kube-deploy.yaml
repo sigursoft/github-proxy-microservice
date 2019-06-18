@@ -24,7 +24,6 @@ spec:
           tcpSocket:
             port: github-proxy
           initialDelaySeconds: 3
-          timeoutSeconds: 6
           periodSeconds: 2
           failureThreshold: 3
         livenessProbe:
@@ -32,8 +31,6 @@ spec:
             path: /
             port: github-proxy
           initialDelaySeconds: 6
-          timeoutSeconds: 4
-          periodSeconds: 3
         resources:
           limits:
             cpu: "2"
