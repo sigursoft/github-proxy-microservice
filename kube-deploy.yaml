@@ -38,3 +38,16 @@ spec:
           requests:
             cpu: "0.6"
             memory: 512Mi
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    run: prod
+  name: github-proxy
+spec:
+  selector:
+    app: github-proxy-microservice
+  ports:
+  - port: 8080
+    targetPort: 8080
