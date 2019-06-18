@@ -23,15 +23,15 @@ spec:
         readinessProbe:
           tcpSocket:
             port: github-proxy
-          initialDelaySeconds: 10
+          initialDelaySeconds: 3
           timeoutSeconds: 6
           periodSeconds: 2
-          failureThreshold: 100
+          failureThreshold: 3
         livenessProbe:
           httpGet:
             path: /
             port: github-proxy
-          initialDelaySeconds: 30
+          initialDelaySeconds: 6
           timeoutSeconds: 4
           periodSeconds: 3
         resources:
