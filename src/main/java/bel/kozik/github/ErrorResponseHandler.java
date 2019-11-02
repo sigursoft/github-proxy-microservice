@@ -6,7 +6,6 @@ import io.undertow.server.HttpServerExchange;
 import static io.undertow.util.Headers.CONTENT_LENGTH;
 import static io.undertow.util.Headers.CONTENT_TYPE;
 
-
 /**
  * Error Response Handler.
  * Created by Anton Kozik on 26.05.16.

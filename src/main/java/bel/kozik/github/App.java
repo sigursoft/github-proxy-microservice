@@ -15,7 +15,6 @@ import io.undertow.server.handlers.cache.DirectBufferCache;
 import io.undertow.server.handlers.resource.CachingResourceManager;
 import io.undertow.server.handlers.resource.ClassPathResourceManager;
 
-
 /**
  * Simple App with embedded http server.
  * Created by Anton Kozik on 25.05.16.
@@ -50,9 +49,9 @@ public class App {
         ErrorResponseHandler errorResponseHandler = new ErrorResponseHandler(blockingHandler);
 
         // STATIC RESOURCES
-        ClassPathResourceManager cprm = new ClassPathResourceManager(App.class.getClassLoader(), "html");
+        ClassPathResourceManager classPathResourceManager = new ClassPathResourceManager(App.class.getClassLoader(), "html");
         CachingResourceManager crm = new CachingResourceManager(100, 65536, new DirectBufferCache(1024, 10, 10480),
-                                                                cprm, (int) Duration.ofDays(7).getSeconds());
+                                                                classPathResourceManager, (int) Duration.ofDays(7).getSeconds());
         server = Undertow.builder()
                 .addHttpListener(port, hostname)
                 .setHandler(path().addPrefixPath("/", resource(crm)).addPrefixPath("/repositories", errorResponseHandler))
