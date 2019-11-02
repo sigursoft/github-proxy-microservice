@@ -5,16 +5,18 @@
 
     <cache-container default-cache="default" shutdown-hook="DEFAULT">
         <jmx domain="infinispan.cache" duplicate-domains="true"/>
-        <local-cache name="repos">
+        <local-cache-configuration name="repos-template">
+            <expiration interval="100000" lifespan="86400000" max-idle="86000000"/>
             <!-- Maximum cache size is 10_000 entries -->
             <memory>
-                <object size="10000" />
+                <object size="10000"/>
             </memory>
-        </local-cache>
+        </local-cache-configuration>
+        <local-cache name="repos" configuration="repos-template" simple-cache="true"/>
         <local-cache name="default">
             <!-- Maximum cache size is 10_000 entries -->
             <memory>
-                <object size="10000" />
+                <object size="10000"/>
             </memory>
         </local-cache>
     </cache-container>
